@@ -3,7 +3,7 @@ ifndef require # Include guard
 #
 # Usage:
 # exports := $(call require,path_to_makefile)
-require = $(strip \
+require = $(sort \
   $(eval exports :=) \
   $(eval _d_stack := $(_d_stack) $(dir $(1))) \
   $(eval d := $(lastword $(_d_stack))) \
@@ -14,7 +14,7 @@ require = $(strip \
   $(eval exports :=) \
 )
 # Explanation:
-# Line 1  : Apply "strip" function to exports list returned on Line 6
+# Line 1  : Apply "sort" function to exports list returned on Line 6
 # Line 2  : Reset exports list to empty string
 # Line 3  : Push new directory onto _d_stack
 # Line 4  : Set d to new directory
@@ -23,5 +23,5 @@ require = $(strip \
 # Line 7  : Pop directory from _d_stack
 # Line 8  : Reset d to old directory
 # Line 9  : Reset exports list to empty string
-# Line 10 : Terminate "strip" function arguments list
+# Line 10 : Terminate "sort" function arguments list
 endif
