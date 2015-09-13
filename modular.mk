@@ -1,5 +1,5 @@
-ifndef require # Include guard.
-# Function "require".
+ifndef require # Include guard
+# Function "require"
 #
 # Usage:
 # exports := $(call require,path_to_makefile)
@@ -14,12 +14,12 @@ require = $(strip \
   $(eval exports :=) \
 )
 # Explanation:
-# 1. Reset exports list.
-# 2. Push new directory onto _d_list_.
-# 3. Set d to new directory.
-# 4. Include the Makefile at path_to_makefile.
-# 5. Pop new directory from _d_list_.
-# 6. Reset d to old directory.
-# 7. Return exports list set by the required Makefile.
-# 8. Reset exports list.
+# 1. Reset exports list
+# 2. Push new directory onto _d_list_
+# 3. Set d to new directory
+# 4. Include the Makefile at path_to_makefile
+# 5. Pop new directory from _d_list_
+# 6. Reset d to old directory
+# 7. Return exports list set by the required Makefile
+# 8. Reset exports list
 endif
