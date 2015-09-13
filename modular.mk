@@ -14,12 +14,14 @@ require = $(strip \
   $(eval exports :=) \
 )
 # Explanation:
-# 1. Reset exports list
-# 2. Push new directory onto _d_list_
-# 3. Set d to new directory
-# 4. Include the Makefile at path_to_makefile
-# 5. Pop new directory from _d_list_
-# 6. Reset d to old directory
-# 7. Return exports list set by the required Makefile
-# 8. Reset exports list
+# Line 1  : Apply "strip" function to exports list returned on Line 8
+# Line 2  : Reset exports list to empty string
+# Line 3  : Push new directory onto _d_list_
+# Line 4  : Set d to new directory
+# Line 5  : Include the Makefile at "path_to_makefile"
+# Line 6  : Pop directory from _d_list_
+# Line 7  : Reset d to old directory
+# Line 8  : Return exports list set by the included "path_to_makefile"
+# Line 9  : Reset exports list to empty string
+# Line 10 : Terminate "strip" function arguments list
 endif
