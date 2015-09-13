@@ -1,8 +1,15 @@
 ifndef require # Include guard
 # Function "require"
 #
+# Description:
+#
+# Use "require" instead of Make's built-in "include" directive to
+# include Makefiles designed to work with modular.mk.
+#
 # Usage:
-# exports := $(call require,path_to_makefile)
+#
+# exports := $(call require,<path_to_makefile>)
+
 require = $(sort \
   $(eval exports :=) \
   $(eval _d_stack := $(_d_stack) $(dir $(1))) \
