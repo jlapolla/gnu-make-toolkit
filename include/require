@@ -2,7 +2,7 @@
 # require - modular version of Make's "include" directive
 #
 # USAGE
-# <exports> := $(call require,<path_to_makefile>)
+# <exports> := $(call require,<path_to_makefile>,[<required_exports>])
 #
 # DESCRIPTION
 # Sets the special $(d) variable, then includes the "required" Makefile.
@@ -16,6 +16,11 @@
 # The path to the "required" Makefile. This can be an absolute path, or
 # a relative path. A relative path MUST be prefixed with $(d) (see $(d)
 # in VARIABLES).
+#
+# <required_exports>
+# List of exports needed by the Makefile that called "require". Make
+# exits with error if there is a target in <required_exports> that is
+# not exported by the "required" Makefile.
 #
 # RETURNS
 # The exports list declared by the "required" Makefile.
@@ -61,7 +66,13 @@ require = $(sort \
   $(eval __d_stack := $(__d_stack) $(dir $(1))) \
   $(eval d := $(lastword $(__d_stack))) \
   $(eval include $(1)) \
-  $(exports) \
+  $(if $(2), \
+    $(if $(filter-out $(filter $(sort $(2)),$(sort $(exports))),$(sort $(2))), \
+      $(error Missing required export $(filter-out $(filter $(sort $(2)),$(sort $(exports))),$(sort $(2)))) \
+      ,$(exports) \
+    ) \
+    ,$(exports) \
+  ) \
   $(eval __d_stack := $(wordlist 2,$(words $(__d_stack)),x $(__d_stack))) \
   $(eval d := $(lastword $(__d_stack))) \
   $(eval exports :=) \
