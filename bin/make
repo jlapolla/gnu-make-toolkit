@@ -1,0 +1,37 @@
+#!/bin/sh
+
+# Wrapper script for GNU Make. Calls Make with a -I option for each
+# colon-separated directory in the $MAKE_PATH environment variable. To
+# use, place this wrapper script on your $PATH before the actual Make
+# executable.
+
+# Set location of actual Make executable
+make="/usr/bin/make"
+
+# Initialize cmd
+cmd="exec $make"
+
+# Set IFS to ":" to split $MAKE_PATH by colons
+unset ifs
+if test -n "${IFS+x}" ; then # If IFS is set
+  ifs="$IFS" # Set ifs to current value of IFS
+fi
+IFS=":"
+
+# Add Make -I arguments
+for dir in $MAKE_PATH ; do
+  cmd="$cmd -I \"$dir\""
+done
+
+# Reset IFS
+if test -n "${ifs+x}" ; then # If ifs is set
+  IFS="$ifs" # Reset IFS to ifs
+else
+  unset IFS
+fi
+
+# Add other arguments to Make
+cmd="$cmd \"\$@\""
+
+# Execute Make
+eval $cmd
