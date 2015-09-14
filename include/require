@@ -30,9 +30,9 @@
 # the recipe can be run from any working directory. NOTE: $(d) includes
 # a trailing slash.
 #
-# $(_d_stack) [PRIVATE]
+# $(__d_stack) [PRIVATE]
 # The stack of $(d) variables used in recursive calls to "require".
-# "require" uses $(_d_stack) to reset $(d) to the current directory
+# "require" uses $(__d_stack) to reset $(d) to the current directory
 # after it is done including the "required" Makefile.
 #
 # $(exports)
@@ -46,11 +46,11 @@
 # CODE COMMENTS
 # Line 1  : Apply "sort" function to exports list returned on Line 6
 # Line 2  : Reset exports list to empty string
-# Line 3  : Push new directory onto _d_stack
+# Line 3  : Push new directory onto __d_stack
 # Line 4  : Set d to new directory
 # Line 5  : Include the Makefile at "path_to_makefile"
 # Line 6  : Return exports list declared by the included "path_to_makefile"
-# Line 7  : Pop directory from _d_stack
+# Line 7  : Pop directory from __d_stack
 # Line 8  : Reset d to old directory
 # Line 9  : Reset exports list to empty string
 # Line 10 : Terminate "sort" function arguments list
@@ -58,12 +58,12 @@
 ifndef require
 require = $(sort \
   $(eval exports :=) \
-  $(eval _d_stack := $(_d_stack) $(dir $(1))) \
-  $(eval d := $(lastword $(_d_stack))) \
+  $(eval __d_stack := $(__d_stack) $(dir $(1))) \
+  $(eval d := $(lastword $(__d_stack))) \
   $(eval include $(1)) \
   $(exports) \
-  $(eval _d_stack := $(wordlist 2,$(words $(_d_stack)),x $(_d_stack))) \
-  $(eval d := $(lastword $(_d_stack))) \
+  $(eval __d_stack := $(wordlist 2,$(words $(__d_stack)),x $(__d_stack))) \
+  $(eval d := $(lastword $(__d_stack))) \
   $(eval exports :=) \
 )
 endif
