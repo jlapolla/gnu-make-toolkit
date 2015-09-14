@@ -1,14 +1,15 @@
 # DIRECTIVE
-# require - Modular.mk version of Make's "include" directive
+# require - modular version of Make's "include" directive
 #
 # USAGE
 # <exports> := $(call require,<path_to_makefile>)
 #
 # DESCRIPTION
-# Sets the special "d" variable, then includes the "required" Makefile.
+# Sets the special $(d) variable, then includes the "required" Makefile.
+# Used for working with modular Makefiles.
 #
-# Use "require" instead of Make's "include" directive to include
-# Makefiles designed to work with Modular.mk.
+# The operation and syntax of this function was inspired by the Node.js
+# module loading system <https://nodejs.org/api/modules.html>.
 #
 # ARGUMENTS
 # <path_to_makefile>
@@ -32,15 +33,15 @@
 # $(_d_stack) [PRIVATE]
 # The stack of $(d) variables used in recursive calls to "require".
 # "require" uses $(_d_stack) to reset $(d) to the current directory
-# after it is done parsing the "required" Makefile.
+# after it is done including the "required" Makefile.
 #
 # $(exports)
 # A list of targets declared by the "required" Makefile. The "required"
-# Makefile MUST set $(exports) to indicate the targets available. The
-# Makefile that called "require" MUST NOT depend on targets that are NOT
-# listed in the "required" Makefile's $(exports). The Makefile that
-# called "require" cannot access $(exports) directly. Instead, it must
-# use the value returned from "require".
+# Makefile MUST set $(exports) to indicate the targets available in the
+# module. The Makefile that called "require" MUST NOT depend on targets
+# that are NOT listed in the "required" Makefile's $(exports). The
+# Makefile that called "require" cannot access $(exports) directly.
+# Instead, it must use the value returned from "require".
 #
 # CODE COMMENTS
 # Line 1  : Apply "sort" function to exports list returned on Line 6
