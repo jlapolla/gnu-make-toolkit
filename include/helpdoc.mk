@@ -24,7 +24,7 @@
 # TARGETS
 # help.<target_name>
 #
-# help-intro
+# help
 #
 # help-show-all
 #
@@ -48,10 +48,10 @@ helpdoc = $(if \
   $(eval __helpdoc_targets := $(sort $(__helpdoc_targets) $(1))) \
 ,,)
 
-# "help-intro" target rule
-.PHONY: help-intro
-$(call helpdoc,help-intro,Show message introducing the help documentation system)
-help-intro:
+# "help" target rule
+.PHONY: help
+$(call helpdoc,help,Show message introducing the help documentation system)
+help:
 	$(info Help Documentation)
 	$(info ==================)
 	$(info )
@@ -64,7 +64,7 @@ help-intro:
 	$(info make help.<target_name>:)
 	$(info Show help for <target_name>)
 	$(info )
-	$(info make help-intro:)
+	$(info make help:)
 	$(info Show message introducing the help documentation system (this message))
 	$(info )
 	@true
