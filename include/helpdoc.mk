@@ -2,7 +2,7 @@
 # helpdoc - help documentation system
 #
 # USAGE
-# $(call helpdoc,<target_name>,<help_text>)
+# $(call helpdoc,<target_name>,[<help_text>])
 #
 # DESCRIPTION
 # The "helpdoc" function is used for adding distributed help
@@ -22,8 +22,10 @@
 # documentation for <target_name>. The help.<target_name> target has no
 # dependency relation to <target_name>.
 #
-# <help_text>
-# The text to display when the help.<target_name> target is rebuilt.
+# <help_text> [OPTIONAL]
+# The text to display when the help.<target_name> target is rebuilt. If
+# no <help_text> is provided, the created help.<target_name> target
+# displays a message indicating that there is no help text available.
 #
 # RETURNS
 # Empty string.
@@ -54,7 +56,7 @@
 # This target is a candidate for .DEFAULT_GOAL.
 #
 # help-show-all
-# Standard target created by "helpdoc.mk". Displays help for all
+# Standard target created by "helpdoc.mk". Displays <help_text> for all
 # registered <target_name> targets by rebuilding each help.<target_name>
 # target.
 #
@@ -70,9 +72,7 @@ ifndef helpdoc
 define __helpdoc_template
 .PHONY: help.$(1)
 help.$(1):
-	$$(info $(1):)
-	$$(info $(2))
-	$$(info )
+	$$(info $(1):)$(if $(2),$$(info $(2)),$$(info (no help text)))$$(info )
 	@true
 endef
 
