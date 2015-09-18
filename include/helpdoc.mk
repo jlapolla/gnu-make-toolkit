@@ -72,7 +72,9 @@ ifndef helpdoc
 define __helpdoc_template
 .PHONY: help.$(1)
 help.$(1):
-	$$(info $(1):)$(if $(2),$$(info $(2)),$$(info (no help text)))$$(info )
+	$$(info $(1):)
+	$(if $(2),$$(info $(2)),$$(info (no help text)))
+	$$(info )
 	@true
 endef
 
