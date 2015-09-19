@@ -1,5 +1,5 @@
 # TARGET
-# watch - automatically update targets when prerequisites change
+# watch - automatically update targets when required
 #
 # USAGE
 # make watch WATCHLIST="<target_name>[ <target_name>[...]]"
@@ -15,11 +15,17 @@
 # List of targets to poll for updates. WATCHLIST should be specified on
 # the command line.
 #
-# $(__watch)
-# Used to detect if "watch" target has already been defined.
+# $(__watch_comma)
+# Contains a comma (,) character.
 
-ifndef __watch
-__watch := 1
+ifndef __watch_comma
+
+# Store ","
+__watch_comma := ,
+
+# Include helpdoc.mk, if available
+-include helpdoc.mk
+$(call helpdoc,watch,Automatically update targets when required. For example$(__watch_comma) 'make watch WATCHLIST="<target_name>[ <target_name>[...]]"' continuously checks each <target_name>$(__watch_comma) and updates each <target_name> when required.)
 
 ifdef WATCHLIST
 # "watch" target rule
@@ -44,4 +50,4 @@ watch:
 	@false
 
 endif # ifdef WATCHLIST
-endif # ifndef __watch
+endif # ifndef __watch_comma
