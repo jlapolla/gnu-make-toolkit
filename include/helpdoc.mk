@@ -72,12 +72,15 @@ define __helpdoc_newline
 endef
 
 # "helpdoc" function definition
-helpdoc = $(eval __helpdoc_targets := $(sort $(__helpdoc_targets) $(1)))$(if $(2),$(eval __helpdoc_text.$(1) := $(2)),)
+helpdoc = $(eval __helpdoc_targets := $(sort $(__helpdoc_targets) $(1)))
 
-$(call helpdoc,help,Show help documentation for targets given in the HELPLIST variable$(__helpdoc_comma) or show message introducing the help documentation system if no HELPLIST variable is provided)
 ifdef HELPLIST
+# Append to "helpdoc" function definition
+helpdoc += $(if $(2),$(eval __helpdoc_text.$(1) := $(2)),)
+
 # "help" target rule
 .PHONY: help
+$(call helpdoc,help,Show help documentation for targets given in the HELPLIST variable$(__helpdoc_comma) or show message introducing the help documentation system if no HELPLIST variable is provided)
 help:
 	$(foreach __helpdoc_loop,$(sort $(subst $(__helpdoc_newline), ,$(HELPLIST))),$(if $(findstring $(__helpdoc_loop),$(__helpdoc_targets)), \
 	  $(info $(__helpdoc_loop):)$(if $(__helpdoc_text.$(__helpdoc_loop)),$(info $(__helpdoc_text.$(__helpdoc_loop))),$(info (no help documentation)))$(info ), \
@@ -88,12 +91,13 @@ help:
 else # ifdef HELPLIST
 # "help" target rule (introduction version)
 .PHONY: help
+$(call helpdoc,help)
 help:
 	$(info Help Documentation)
 	$(info ==================)
 	$(info )
 	$(info make helplist:)
-	$(info $(__helpdoc_text.helplist))
+	$(info List all targets registered with the help documentation system)
 	$(info )
 	$(info make help HELPLIST="<target_name>[ <target_name>[...]]":)
 	$(info Show help documentation for each <target_name>)
