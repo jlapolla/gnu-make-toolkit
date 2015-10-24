@@ -26,8 +26,7 @@
 ifndef recv_key
 
 define recv_key
-gpg --keyserver keys.gnupg.net --recv-keys $(1)
-$(if $(2),gpg -ao $(2) --export $(1))
+gpg --keyserver keys.gnupg.net --recv-keys $(1)$(if $(2),&& gpg -ao $(2) --export $(1))
 endef
 
 endif
